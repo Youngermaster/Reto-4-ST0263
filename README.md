@@ -2,9 +2,7 @@
 
 ## Overview
 
-**Reto 4: Aplicación Monolítica con Balanceo y Datos Distribuidos (BD y archivos)** is a project that sets up 2 Wordpress applications with load balancing using NGINX and a distributed database (MySQL or MariaDB) and file system (NFS). This project involves using Docker containers across multiple EC2 instances to create a robust and scalable web application infrastructure.
-
-<img src="/architecture.png" width="300" alt="Architecture">
+**Reto 4: Kubernetes-based Monolithic Application with Distributed Data and File Systems** is a project that sets up WordPress with MariaDB, utilizing Kubernetes for orchestration to achieve high availability and scalability.
 
 ## Video Demo
 
@@ -28,52 +26,48 @@
 
 ## Project Structure
 
-This repository is organized into several directories, each containing components necessary for the deployment of the application:
+This repository is organized into several directories, each containing components necessary for the deployment of the application on Kubernetes:
 
-- `ansible/`: Contains Ansible playbooks and configurations for provisioning and setting up AWS EC2 instances.
-- `db/`: Includes Docker configurations for setting up the database (MariaDB/MySQL).
-- `nginx/`: Holds the Dockerfile and configurations for the NGINX load balancer.
-- `terraform/`: Contains Terraform files for infrastructure provisioning. (Note: Not extensively used in this project due to assignment limitations.)
-- `wordpress/`: Contains Docker configurations for setting up Wordpress instances.
-
-Each directory has its own `README.md` with detailed instructions and explanations specific to that component.
+- `k8s/`: Contains Kubernetes YAML files for deploying WordPress and MariaDB.
+- `ansible/`: Includes Ansible playbooks for initial setup and configurations on EC2s instances.
+- `db/`: Holds Kubernetes configurations for MariaDB deployment.
+- `wordpress/`: Contains Kubernetes configurations for WordPress deployment.
 
 ## Getting Started
 
-To set up the entire application stack, follow these general steps:
+To deploy the application stack on Kubernetes, follow these steps:
 
-1. **Provision Infrastructure**:
+1. **Cluster Setup**:
 
-   - Manually provision AWS EC2 instances or use the Ansible playbooks in the `ansible/` directory for automated setup.
-   - (Optional) For a more automated infrastructure setup, see the Terraform files in the `terraform/` directory.
+   - Ensure your Kubernetes cluster is up and running. If using AWS EKS, follow the manual setup due to IAM limitations.
 
-2. **Database Setup**:
+2. **Deploy the Applications**:
 
-   - Navigate to the `db/` directory.
-   - Follow the instructions in `db/README.md` to set up your database using Docker Compose.
+   - Navigate to the `k8s/` directory.
+   - Apply the Kubernetes configurations:
 
-3. **Wordpress Setup**:
+     ```bash
+     kubectl apply -f configmaps-k8s.yml
+     kubectl apply -f db-k8s.yml
+     kubectl apply -f wordpress-k8s.yml
+     ```
 
-   - Navigate to the `wordpress/` directory.
-   - Follow the instructions in `wordpress/README.md` to get your Wordpress instances up and running.
+3. **Accessing the Application**:
+   - Once deployed, find the external IP or DNS name provided by the LoadBalancer service for WordPress:
 
-4. **NGINX Load Balancer Setup**:
+     ```bash
+     kubectl get service wordpress
+     ```
 
-   - Navigate to the `nginx/` directory.
-   - Follow the instructions in `nginx/README.md` to set up NGINX as a load balancer for the Wordpress instances.
-
-5. **Integration and Testing**:
-   - After setting up the database, Wordpress instances, and NGINX, ensure all components are correctly integrated.
-   - Test the setup by accessing your Wordpress site through the NGINX load balancer's IP.
+   - Access your WordPress site via the provided URL.
 
 ## Additional Resources
 
-- For automated provisioning and configuration of AWS EC2 instances, refer to the `ansible/` directory.
-- If interested in infrastructure as code (IaC) for AWS, see the `terraform/` directory for an example setup (limited usage in this project).
+- Kubernetes official documentation: [https://kubernetes.io/docs/](https://kubernetes.io/docs/)
 
 ## Support
 
-Should you encounter any issues or have questions regarding the setup, please refer to the respective `README.md` in each directory or raise an issue in the repository.
+For any issues or questions, please refer to the `README.md` in each directory or raise an issue in the repository.
 
 ## Contributions
 
