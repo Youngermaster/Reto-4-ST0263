@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    # Default to using MariaDB
+    image: mariadb:10.6.4-focal
+    # If you prefer MySQL, uncomment the following line and comment out the mariadb line
+    # image: mysql:8.0.27
+    command: '--default-authentication-plugin=mysql_native_password'
+    container_name: mysql_server
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./.env
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
